@@ -11,14 +11,64 @@ rs2048.rs - 2048 Game
 2020/06/20 Go版からRust版へ移植開始
 2020/06/27 Rust版一旦動作OK（残：乱数の種対応）
 
-Game Over! (level=4 SEED=-94) 2020/06/27 23:08:21 #1 Ave.=70868 Max=70868(SEED=-94) Min=70868(SEED=-94)
-getGap=215404905 calc_gap=4421306052 10.0,0.0 55%,1 20000,1 10%,1 200000,1 1 CALC_GAP_MODE=0
-Rust[1:2949] 70868 (0.00/57.5 sec) 70703126.823242 2020/06/27 23:08:21 SEED=-94 2=76.05% Ave.=141736
-    4    16   256     4
-    8    32   512    32
-    4     8   256  2048
-    2    32     2  4096
-Total time = 57.49 (sec)
+USAGE:
+    rs2048.exe [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+        --version    Prints version information
+
+OPTIONS:
+    -a, --auto_mode <auto_mode>                                    読みの深さ(>0)
+    -c, --calc_gap_mode <calc_gap_mode>
+            gap計算モード(0:normal 1:端の方が小さければ+1 2:*2 3:+大きい方の値 4:+大きい方の値/10 5:+両方の値)
+
+    -o, --one_time <one_time>                                      N回で終了
+    -u, --pause_mode <pause_mode>                                  終了時に一時中断(0/1)
+    -m, --print_mode <print_mode>                                  途中経過の表示間隔(0：表示しない)
+    -t, --print_mode_turbo <print_mode_turbo>
+            0:PRINT_MODEに従う 1:TURBO_MINUS_SCOREを超えたら強制表示 2:TURBO_PLUS_SCOREを超えたら強制表示
+
+    -r, --seed <seed>                                              乱数の種
+    -p, --turbo_minus_percent <turbo_minus_percent>                空き率がこれ以上であれば読みの深さを下げる
+    -l, --turbo_minus_percent_level <turbo_minus_percent_level>    空き率が閾値以上の時に下げる読みの深さ
+    -s, --turbo_minus_score <turbo_minus_score>                    点数がこれ以下であれば読みの深さを下げる
+    -v, --turbo_minus_score_level <turbo_minus_score_level>        点数が閾値以下の時に下げる読みの深さ
+    -P, --turbo_plus_percent <turbo_plus_percent>                  空き率がこれ以下であれば読みの深さを上げる
+    -L, --turbo_plus_percent_level <turbo_plus_percent_level>      空き率が閾値以下の時に上げる読みの深さ
+    -S, --turbo_plus_score <turbo_plus_score>                      点数がこれ以上であれば読みの深さを上げる
+    -V, --turbo_plus_score_levels <turbo_plus_score_level>         点数が閾値以上の時に上げる読みの深さ
+
+Game Over! (level=4 SEED=-184) 2020/06/28 01:32:15 #1 Ave.=121688 Max=121688(SEED=-184) Min=121688(SEED=-184)
+getGap=349234643 calc_gap=6657041939 10.0,0.0 55%,1 20000,1 10%,1 200000,1 2 CALC_GAP_MODE=0
+Rust[1:4540] 121688 (0.00/78.5 sec) 75000023.906250 2020/06/28 01:32:15 SEED=-184 2=75.17% Ave.=243376
+ 2048    16     2    16
+   16   512   256    64
+    8    32   128    32
+    2     4  8192     8
+Total time = 78.52 (sec)
+    
+Game Over! (level=4 SEED=-46) 2020/06/28 00:01:33 #1 Ave.=120736 Max=120736(SEED=-46) Min=120736(SEED=-46)
+getGap=360710293 calc_gap=7405751820 10.0,0.0 55%,1 20000,1 10%,1 200000,1 2 CALC_GAP_MODE=0
+Rust[1:4511] 120736 (0.00/84.6 sec) 75000001.108924 2020/06/28 00:01:33 SEED=-46 2=76.10% Ave.=241472
+    2     8     2     4
+    4    16    32    16
+   64   128   512  2048
+    8    16   128  8192
+Total time = 84.61 (sec)
+
+
+ .\target\release\rs2048.exe -r=-46 -S 111000 -t 2
+ Game Over! (level=4 SEED=-46) 2020/06/28 00:26:14 #1 Ave.=143964 Max=143964(SEED=-46) Min=143964(SEED=-46)
+getGap=4206140449 calc_gap=90626303617 10.0,0.0 55%,1 20000,1 10%,1 111000,1 2 CALC_GAP_MODE=0
+Rust[1:5584] 143964 (0.00/1057.1 sec) 100000000.000000 2020/06/28 00:26:14 SEED=-46 2=78.18% Ave.=287928
+    2     8    64     8
+    8  2048   512    16
+   32   128  2048  8192
+    8   512    16     4
+Total time = 1057.11 (sec)
+
+
 */
 
 extern crate clap;
